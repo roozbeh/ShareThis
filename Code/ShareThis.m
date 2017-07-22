@@ -22,6 +22,7 @@ NSString *const AppWillTerminateNotificationName = @"appWillTerminate";
 @property (nonatomic, strong) UIViewController *viewControllerToShowServiceOn;
 @property (nonatomic) STContentType contentType;
 @property (nonatomic, strong) NSMutableArray *actionSheetServiceButtonList;
+@property (nonatomic, strong) UIView *viewOn;
 @end
 
 @implementation ShareThis
@@ -120,6 +121,13 @@ NSString *const AppWillTerminateNotificationName = @"appWillTerminate";
     [[ShareThis sharedManager] showShareOptionsToShareUrl:url title:title image:image onViewController:viewController];
 }
 
++ (void)showShareOptionsToShareUrl:(NSURL *)url title:(NSString *)title image:(UIImage *)image onViewController:(UIViewController *)viewController forTypeOfContent:(STContentType)contentType onView:(UIView *) view
+{
+    [ShareThis sharedManager].viewOn = view;
+    [[ShareThis sharedManager] setContentType:contentType];
+    [[ShareThis sharedManager] showShareOptionsToShareUrl:url title:title image:image onViewController:viewController];
+}
+
 - (void)showShareOptionsToShareUrl:(NSURL *)url title:(NSString *)title image:(UIImage *)image onViewController:(UIViewController *)viewController
 {
     // Save the view to later use it to show/dismiss services
@@ -163,11 +171,15 @@ NSString *const AppWillTerminateNotificationName = @"appWillTerminate";
         default:
             break;
     }
-    
+
     UIActivityViewController *activityVC =
     [[UIActivityViewController alloc] initWithActivityItems:activityItems
                                       applicationActivities:applicationActivities];
+
     activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypePrint, UIActivityTypeSaveToCameraRoll];
+    activityVC.popoverPresentationController.sourceView = self.viewOn;
+    activityVC.popoverPresentationController.sourceRect = self.viewOn.frame;
+    
     [self.viewControllerToShowServiceOn presentViewController:activityVC animated:YES completion:nil];
 }
 

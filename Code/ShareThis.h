@@ -38,6 +38,14 @@ extern NSString *const AppWillTerminateNotificationName;
 
 + (ShareThis *)sharedManager;
 + (void)shareURL:(NSURL *)url title:(NSString *)title image:(UIImage *)image withService:(STServiceType)service onViewController:(UIViewController *)viewController;
+
++ (void)showShareOptionsToShareUrl:(NSURL *)url
+                             title:(NSString *)title
+                             image:(UIImage *)image
+                  onViewController:(UIViewController *)viewController
+                  forTypeOfContent:(STContentType)contentType
+                            onView:(UIView *) view;
+
 + (void)showShareOptionsToShareUrl:(NSURL *)url title:(NSString *)title image:(UIImage *)image onViewController:(UIViewController *)viewController;
 + (void)showShareOptionsToShareUrl:(NSURL *)url title:(NSString *)title image:(UIImage *)image onViewController:(UIViewController *)viewController forTypeOfContent:(STContentType)contentType;
 + (void)startSessionWithFacebookURLSchemeSuffix:(NSString *)suffix
